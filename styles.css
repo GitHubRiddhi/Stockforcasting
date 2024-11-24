@@ -1,0 +1,146 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f7fc;
+    color: #333;
+    line-height: 1.6;
+}
+
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #333;
+}
+
+header h1 {
+    font-size: 42px;
+    font-weight: 600;
+    color: #4C6B8C;
+    text-transform: uppercase;
+}
+
+header p {
+    font-size: 20px;
+    color: #7d7d7d;
+    margin-top: 10px;
+}
+
+.input-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.input-container input {
+    padding: 12px;
+    width: 250px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    margin-right: 10px;
+    transition: border-color 0.3s ease;
+}
+
+.input-container input:focus {
+    border-color: #4C6B8C;
+}
+
+.input-container button {
+    padding: 12px 30px;
+    background-color: #4C6B8C;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.input-container button:hover {
+    background-color: #3b4d60;
+}
+
+.loading {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.loading img {
+    width: 50px;
+    height: 50px;
+}
+
+.forecast-container {
+    margin-top: 40px;
+    width: 100%; /* Ensure the container is fully responsive */
+    overflow: auto;
+}
+
+.forecast-table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    max-width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: block;
+    overflow-x: auto;
+}
+
+.forecast-table th,
+.forecast-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.forecast-table th {
+    background-color: #4C6B8C;
+    color: #fff;
+}
+
+.forecast-table td {
+    background-color: #fff;
+    color: #555;
+}
+
+.forecast-img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-top: 20px;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+footer {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 16px;
+    color: #7d7d7d;
+}
+
+footer a {
+    color: #4C6B8C;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}

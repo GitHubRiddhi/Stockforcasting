@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Forecast Viewer</title>
+    <link rel="stylesheet" href="styles.css">
+   <style>
+    /* Basic Styling */
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f4f7fc;
+        color: #333;
+        line-height: 1.6;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #4C6B8C;
+        font-size: 36px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .tabs {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #ddd;
+    }
+
+    .tab {
+        padding: 15px 30px;
+        cursor: pointer;
+        font-weight: 600;
+        color: #555;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-bottom: none;
+        border-radius: 5px 5px 0 0;
+        margin-right: 10px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .tab:hover {
+        background-color: #e0e0e0;
+    }
+
+    .tab.active {
+        background-color: #4C6B8C;
+        color: #fff;
+        border: 1px solid #4C6B8C;
+        border-bottom: 2px solid #4C6B8C;
+    }
+
+    .tab-content {
+        display: none;
+        padding: 20px;
+        background-color: #fff;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    .forecast-container {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    /* Dropdown styling */
+        select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        /* Button styling */
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4C6B8C;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #3b5a70;
+        }
+        
+
+    /* Loading Styles */
+    .loading {
+        display: none;
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .loading img {
+        width: 50px;
+        height: 50px;
+    }
+
+        /* Table Styling */
+    .forecast-table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        overflow-x: auto;
+        border-radius: 8px;
+    }
+
+    .forecast-table th,
+    .forecast-table td {
+        padding: 15px 20px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        font-size: 14px;
+        color: #555;
+    }
+
+    .forecast-table th {
+        background-color: #4C6B8C;
+        color: #fff;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .forecast-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    .forecast-table tr:nth-child(odd) {
+        background-color: #ffffff;
+    }
+
+    .forecast-table tr:hover {
+        background-color: #e0e0e0;
+    }
+
+    .forecast-table td {
+        color: #333;
+    }
+
+    /* Responsive table */
+    .forecast-container {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    /* Image Styling */
+    .forecast-img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        margin-top: 20px;
+    }
+
+    /* Error Message */
+    .error-message {
+        color: red;
+        text-align: center;
+        font-size: 18px;
+        margin-top: 20px;
+    }
+
+    footer {
+        margin-top: 40px;
+        text-align: center;
+        font-size: 16px;
+        color: #7d7d7d;
+    }
+
+    footer a {
+        color: #4C6B8C;
+        text-decoration: none;
+    }
+
+    footer a:hover {
+        text-decoration: underline;
+    }
+</style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Stock Forecast Viewer</h1>
+
+         <section class="about">
+            <h2>About Stock Forecasting</h2>
+            <p>Stock forecasting uses historical data, algorithms, and statistical models to predict future price movements. By analyzing patterns, we aim to forecast price trends to assist investors in making data-driven decisions.</p>
+        </section>
+
+        <section class="how-it-works">
+            <h2>How It Works</h2>
+            <p>Our tool uses machine learning algorithms to predict future stock prices. Simply enter the ticker symbol of the stock you're interested in, and our model will generate a forecast along with a graphical representation of future trends.</p>
+        </section>
+        <br><br>
+        <p>Get forecast data and stock trends for your selected stock ticker. Explore insights and make informed decisions based on predicted stock prices.</p>
+        <br>
+
+         <div class="input-container" style="text-align: center;">
+           <label for="ticker">Select Stock:</label>
+           <select id="ticker">
+           <!-- Options will be dynamically populated here -->
+           </select>
+           <button onclick="fetchForecast()">Get Forecast</button>
+         </div>
+
+
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('plot')">Plot</div>
+            <div class="tab" onclick="showTab('table')">Tabular</div>
+        </div>
+
+        <div class="loading">
+            <img src="https://i.gifer.com/VAyR.gif" alt="Loading...">
+        </div>
+
+        <div id="plot" class="tab-content active">
+            <h2>Forecast Plot</h2>
+            <img id="forecast-plot" src="" alt="Stock Forecast Plot" class="forecast-img">
+        </div>
+
+        <div id="table" class="tab-content">
+            <h2>Forecasted Data Table</h2>
+            <div id="forecast-table" class="forecast-container"></div>
+        </div>
+
+        <p id="error-message" class="error-message"></p>
+    </div>
+
+    <footer>
+        <p>Developed by <a href="#">Your Name</a> &copy; 2024</p>
+    </footer>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tabContent => {
+                tabContent.classList.remove('active');
+            });
+
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show the selected tab content
+            document.getElementById(tabName).classList.add('active');
+
+            // Set the active class on the clicked tab
+            const activeTab = Array.from(document.querySelectorAll('.tab')).find(tab => tab.textContent.toLowerCase() === tabName);
+            activeTab.classList.add('active');
+        }
+
+        async function fetchForecast() {
+            const ticker = document.getElementById('ticker').value || 'AAPL';
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.textContent = '';
+            document.querySelector('.loading').style.display = 'block';  // Show loading gif
+
+            try {
+                // Fetch forecast data
+                const forecastResponse = await fetch(`https://data-insights-441506.et.r.appspot.com/api/forecast-data/${ticker}/`);
+                if (!forecastResponse.ok) {
+                    throw new Error('Error fetching forecast data');
+                }
+
+                const data = await forecastResponse.json();
+
+                // Populate the Plot
+                document.getElementById('forecast-plot').src = data.plot_url_future;
+
+                // Populate the Table
+                document.getElementById('forecast-table').innerHTML = data.comparison_table;  // or data.table
+
+                // Hide loading gif after data is fetched
+                document.querySelector('.loading').style.display = 'none';
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                errorMessage.textContent = 'Unable to fetch forecast data. Please try again later.';
+                document.querySelector('.loading').style.display = 'none';  // Hide loading gif
+            }
+        }
+
+        async function loadTickers() {
+    const tickerSelect = document.getElementById('ticker');
+    const response = await fetch('https://data-insights-441506.et.r.appspot.com/api/get-ticker-list/'); // Replace with actual Django app URL
+
+    if (response.ok) {
+        const stocks = await response.json(); // Assuming stocks come as an array of {ticker, name}
+        
+        stocks.forEach(stock => {
+            let option = document.createElement('option');
+            option.value = stock.ticker;
+            option.textContent = `${stock.ticker} - ${stock.name}`;
+            tickerSelect.appendChild(option);
+        });
+    } else {
+        console.error('Failed to load tickers');
+    }
+}
+
+// Call loadTickers when the page loads
+document.addEventListener("DOMContentLoaded", loadTickers);
+    </script>
+
+</body>
+</html>
